@@ -20,6 +20,7 @@ class App extends Component {
       articles: [],
       error: null
     };
+    this.onLoginSuccess = this.onLoginSuccess.bind(this);
   }
 
   componentDidMount(){
@@ -54,6 +55,12 @@ class App extends Component {
       );
   }
 
+  onLoginSuccess(loggedInUser){
+    this.setState({
+      user: loggedInUser
+    });
+ }
+
   render(){
     return (
       <Container>
@@ -66,7 +73,7 @@ class App extends Component {
           />
          </Route>
          <Route path="/login">
-           <Login />
+           <Login onSuccess={this.onLoginSuccess} />
          </Route>
          <Route path="/register">
            <Register />
@@ -80,9 +87,7 @@ class App extends Component {
   }
 }
 
-
-
-  function Home(){
+function Home(){
     return (
       <div>
         <h2>Home</h2>
