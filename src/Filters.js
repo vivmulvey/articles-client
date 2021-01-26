@@ -11,6 +11,10 @@ import Form from 'react-bootstrap/Form';
 class Filters extends Component {
   render(){
     const categories = this.props.categories;
+    const onCategoryChange = this.props.onCategoryChange;
+    const onAuthorChange = this.props.onAuthorChange;
+
+
 
     return (
       <Accordion className="mt-2">
@@ -30,7 +34,14 @@ class Filters extends Component {
                   </Form.Label>
                   <Col sm={10}>
                     {categories.map(category => (
-                      <Form.Check key={category.id} type="radio" name="category" value={category.title} label={category.title} />
+                      <Form.Check
+                       key={category.id} 
+                       type="radio" 
+                       name="category"
+                        value={category.id} 
+                        label={category.title} 
+                        onChange={onCategoryChange}
+                        />
                     ))}
                   </Col>
                 </Form.Group>
@@ -40,7 +51,11 @@ class Filters extends Component {
                   Author
                 </Form.Label>
                 <Col sm={10}>
-                  <Form.Control type="text" placeholder="Author" />
+                  <Form.Control 
+                  type="text"
+                   placeholder="Author"
+                   onChange = {onAuthorChange}
+                    />
                 </Col>
               </Form.Group>
               <Form.Group as={Row}>
