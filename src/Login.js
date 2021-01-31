@@ -4,6 +4,7 @@ import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 
 class Login extends Component {
+    REST_API = "http://localhost:8000/api";
     constructor(props){
         super(props);
         this.state = {
@@ -29,12 +30,16 @@ class Login extends Component {
         e.preventDefault();
         const userDetails = {
             email: this.state.email,
-            password: this.state.password
+            password: this.state.password,
+            remember: this.state.remember
         };
         fetch(this.REST_API + '/login' , {
             method: 'POST',
             headers: {
-                'Content-Type' : 'application/json'
+                
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                "Access-Control-Allow-Origin": "*"
             },
             body: JSON.stringify(userDetails)
         })
@@ -42,14 +47,16 @@ class Login extends Component {
         .then(
             (result) => {
                 const user = result.data;
-                this.props.onSuccess(user);
+                this.props.onSuccess(user , this.state.remember);
 
             },
             (error) => {
-                console.log(error)
+                console.log(error);
             }
         )
     }
+
+    
     
     render(){
         return(
