@@ -28,18 +28,21 @@ class App extends Component {
       user: localUser,
       categories: [],
       articles: [],
-      error: null
+      error: null,
+      articlesingle: null
     };
     this.onLoginSuccess = this.onLoginSuccess.bind(this);
     this.onLogoutSuccess = this.onLogoutSuccess.bind(this);
     this.onCreateSuccess = this.onCreateSuccess.bind(this);
     this.onViewSuccess = this.onViewSuccess.bind(this);
+    this.onDeleteSuccess = this.onDeleteSuccess.bind(this);
+    this.OnEditSuccess = this.onEditSuccess.bind(this);
+    
    
   }
 
   componentDidMount(){
-
-      fetch(this.REST_API + "/articles")
+    fetch(this.REST_API + "/articles")
       .then(res => res.json())
       .then(
           (result) => {
@@ -92,21 +95,29 @@ class App extends Component {
         articles: [...prevState.articles, article]
       }));
       this.props.history.push('/home');
-
     }
 
-    onViewSuccess(art) {
-      console.log("success", art);
-      this.setState({ //setting state so we can pass down to article view component
-        articlesingle: art,
+    onViewSuccess(article) {
+      console.log("success", article);
+      this.setState({ 
+        articlesingle: article,
       });
     }
 
-    onDeleteSuccess(art) {
-      let articles = this.state.articles;
-      let i = articles.findIndex((a) => a.id === art.id);
-      articles[i] = art;
-    }
+    onDeleteSuccess(id) {
+      let articles = this.state.articles.filter((article) => article.id !== id);
+      this.setState({
+        articles: [...articles],
+    });
+  }
+
+  onEditSuccess(article) {
+    let articles = this.state.articles;
+    let x = articles.findIndex((selectedArticle) => selectedArticle.id === article.id);
+    articles[x] = article;
+    this.props.history.push("/home");
+
+  }
  
 
 
@@ -140,7 +151,6 @@ class App extends Component {
             articles={this.state.articles}
             onViewSuccess={this.onViewSuccess}
             onDeleteSuccess={this.onDeleteSuccess}
-
            />
          </Route>
          <Route path="/articles/create">
@@ -156,10 +166,21 @@ class App extends Component {
            />
          </Route>
          <Route path="/articles/edit/:id">
-           <ArticleEdit />
+           { 
+           this.state.articlesingle ?
+           <ArticleEdit
+            user={this.state.user}
+            categories={this.state.categories}
+            onSuccess={this.onEditSuccess}
+            articlesingle={this.state.articlesingle}
+           />
+           : <h2> Unable to load article</h2>
+            }
          </Route>
          <Route path="/articles/delete/:id">
-           <ArticleDelete />
+           <ArticleDelete 
+           onSuccess={this.onDeleteSuccess}
+           />
          </Route>
       </Switch>
      </Container>

@@ -6,11 +6,12 @@ class ArticleView extends Component {
     render() {
         const article = this.props.articlesingle
         console.log(article)
+        if(article)
         return ( 
             <Card className="mt-2">
-                <Card.Header> </Card.Header>
+                <Card.Header> {article.title}</Card.Header>
                 <Card.Body>
-                  
+                  {article.body}
                 </Card.Body>
                 <Card.Footer>
                     <Button as={Link} to={"/home"} variant="primary" type="submit">
@@ -19,6 +20,8 @@ class ArticleView extends Component {
                 </Card.Footer>
             </Card>
         );
+
+        return <h2>Unable to load article.</h2>
     }
 }
 

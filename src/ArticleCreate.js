@@ -33,7 +33,7 @@ class ArticleCreate extends Component {
         const articleDetails = {
             title: this.state.title,
             body: this.state.body,
-            category_id: this.state.category_id
+            category_id: this.state.category,
         };
         fetch(this.REST_API + '/articles' , {
             method: 'POST',
@@ -95,7 +95,7 @@ class ArticleCreate extends Component {
                                         <Form.Check
                                         key={category.id}
                                         type="radio"
-                                        name="category_id"
+                                        name="category"
                                         value={category.id}
                                         label={category.title}
                                         onChange={this.handleChange}

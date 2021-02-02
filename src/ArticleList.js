@@ -19,6 +19,7 @@ class ArticleList extends Component {
       selectedArticle: article
     });
   }
+
   render(){
     const articles = this.props.articles;
     const selectedCategory = this.props.selectedCategory;
@@ -51,9 +52,9 @@ class ArticleList extends Component {
           {article.id === this.state.selectedArticle && this.props.user && (
           <div className="float-right">
           <Button className="ml-2 btn-info" as={Link} onClick={() => this.props.onClickView(article.id , this.props.user.api_token )} to={"/articles/view/" + article.id} >View</Button>
-          <Button className="ml-2 btn-warning" as={Link} to={"/articles/edit/" + article.id} >Edit</Button>
-          {this.props.user.id == article.user_id &&
-          <Button className="ml-2 btn-danger" as={Link} onClick={() => this.props.onClickDelete(article.id,this.props.user.api_token)} to={"/articles/delete/" + article.id} >Delete</Button>
+          <Button className="ml-2 btn-warning" as={Link} onClick={() => this.props.onClickView(article.id , this.props.user.api_token )}to={"/articles/edit/" + article.id} >Edit</Button>
+          {this.props.user.id === article.user_id &&
+          <Button className="ml-2 btn-danger" as={Link} onClick={() => this.props.onClickDelete(article.id,this.props.user.api_token)} to={"/home" + article.id} >Delete</Button>
           }
           </div>
           )}

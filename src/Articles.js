@@ -12,12 +12,14 @@ class Articles extends Component {
         super(props);
         this.state = {
             selectedCategory: null,
-            selectedAuthor: null 
+            selectedAuthor: null,
+            selectedArticle:null,
         };
 
         this.onCategoryChange = this.onCategoryChange.bind(this);
         this.onAuthorChange = this.onAuthorChange.bind(this);
         this.onClickView = this.onClickView.bind(this);
+        this.onClickDelete = this.onClickDelete.bind(this);
         
     }
 
@@ -44,21 +46,20 @@ class Articles extends Component {
 
   onClickView(id , token ) {
     fetch( "http://localhost:8000/api/articles/" + id, {
-      //rest api request posting user detils
       method: "GET",
       headers: {
        "Accept": "application/json",
        "Content-Type": "application/json",
        "Access-Control-Allow-Origin": "*",
-       "Authorization": "Bearer " + token
+       "Authorization": "Bearer " + this.props.user.api_token
       },
     })
-      .then((res) => res.json()) //converts result into json format
+      .then((res) => res.json()) 
       .then(
         (result) => {
           console.log(result);
-          const art = result;
-          this.props.onSuccess(art); //performs on login success function in app on valid user data
+          const article = result;
+          this.props.onViewSuccess(article); 
         },
         (error) => {
           console.log(error);
@@ -67,8 +68,7 @@ class Articles extends Component {
   }
 
   onClickDelete(id,token) {
-    fetch( "http://localhost:8000/articles/" + id, {
-      //rest api request posting user detils
+    fetch( "http://localhost:8000/api/articles/" + id, {
       method: "DELETE",
       headers: {
         "Accept": "application/json",
@@ -77,12 +77,11 @@ class Articles extends Component {
         "Authorization": "Bearer " + token,
       },
     })
-      .then((res) => res.json()) //converts result into json format
+      .then((res) => res.json()) 
       .then(
         (result) => {
           console.log(result);
-          const deletedArticle = result;
-          this.props.onSuccessDelete(deletedArticle); //performs on login success function in app on valid user data
+          this.props.onDeleteSuccess(id); 
         },
         (error) => {
           console.log(error);
